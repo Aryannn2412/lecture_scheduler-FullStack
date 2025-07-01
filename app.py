@@ -1,3 +1,4 @@
+import os
 from flask import Flask, redirect, url_for, current_app
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
@@ -46,5 +47,6 @@ def create_app():
 
 # Run the app
 if __name__ == '__main__':
-    app = create_app()
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 10000))  # default 10000 for Render
+    app.run(host='0.0.0.0', port=port, debug=True)
+
