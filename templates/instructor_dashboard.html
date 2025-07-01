@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}Instructor Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">👨‍🏫 Welcome, {{ current_user.name }}</h2>
+        <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-danger">Logout</a>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <div class="card shadow-sm p-4">
+        <h4 class="mb-3">📅 Your Scheduled Lectures</h4>
+
+        {% if lectures %}
+        <div class="table-responsive">
+            <table class="table table-striped align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Course Name</th>
+                        <th scope="col">Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for lecture in lectures %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ lecture.course.name }}</td>
+                        <td>{{ lecture.date.strftime('%d %B %Y') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info mt-3" role="alert">
+            <strong>Heads up!</strong> You have no lectures assigned yet. Please contact your admin.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

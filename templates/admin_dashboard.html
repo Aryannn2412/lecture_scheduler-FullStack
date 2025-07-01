@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Welcome, Admin</h2>
+        <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-danger">Logout</a>
+    </div>
+
+    <div class="mb-3">
+        <a class="btn btn-primary me-2" href="{{ url_for('admin.add_course') }}">+ Add Course</a>
+        <a class="btn btn-success" href="{{ url_for('admin.schedule_lecture') }}">+ Schedule Lecture</a>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <h4>All Courses</h4>
+    <div class="row">
+        {% for course in courses %}
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                {% if course.image_url %}
+                <img src="{{ course.image_url }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ course.name }}</h5>
+                    <p class="card-text">{{ course.description[:100] }}...</p>
+                    <span class="badge bg-info text-dark">{{ course.level }}</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
